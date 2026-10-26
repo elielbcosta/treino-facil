@@ -1,0 +1,99 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101318">
+  <title>Meu Primeiro App</title>
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: #101318;
+      color: #ffffff;
+      font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    main {
+      width: 100%;
+      max-width: 480px;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 38px;
+      margin-bottom: 12px;
+    }
+
+    p {
+      color: #b5bbc6;
+      font-size: 21px;
+      line-height: 1.5;
+    }
+
+    #contador {
+      font-size: 100px;
+      font-weight: 900;
+      margin: 30px 0;
+      font-variant-numeric: tabular-nums;
+    }
+
+    button {
+      width: 100%;
+      min-height: 82px;
+      border: none;
+      border-radius: 18px;
+      background: #c8f169;
+      color: #101318;
+      font-size: 25px;
+      font-weight: 900;
+      margin-bottom: 16px;
+      cursor: pointer;
+    }
+
+    button.secundario {
+      background: #252c36;
+      color: #ffffff;
+      border: 1px solid #414956;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Meu Primeiro App</h1>
+    <p>Este é o meu primeiro aplicativo no iPhone!</p>
+
+    <div id="contador" aria-live="polite">0</div>
+
+    <button id="somar">TOCAR AQUI</button>
+    <button id="zerar" class="secundario">ZERAR CONTADOR</button>
+
+    <p id="mensagem">Toque no botão para começar.</p>
+  </main>
+
+  <script>
+    let total = 0;
+
+    document.getElementById("somar").addEventListener("click", function () {
+      total++;
+      document.getElementById("contador").textContent = total;
+      document.getElementById("mensagem").textContent =
+        total === 1 ? "Você tocou 1 vez!" : "Você tocou " + total + " vezes!";
+    });
+
+    document.getElementById("zerar").addEventListener("click", function () {
+      total = 0;
+      document.getElementById("contador").textContent = total;
+      document.getElementById("mensagem").textContent =
+        "Contador zerado. Vamos começar de novo!";
+    });
+  </script>
+</body>
+</html>
