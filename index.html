@@ -4,573 +4,730 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#101318">
+<meta name="theme-color" content="#101827">
 <title>Meu Treino</title>
+
 <style>
-*{box-sizing:border-box}
-body{margin:0;background:#101318;color:#fff;font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:25px;line-height:1.4}
-main{max-width:680px;margin:auto;padding:18px 16px 40px}
-h1{font-size:44px;margin:8px 0}
-h2{font-size:36px;margin:14px 0}
-h3{font-size:29px;margin:10px 0}
-p{line-height:1.5}
-.small{font-size:21px;color:#d0d5df}
-.card{background:#1b212a;border:1px solid #454e5c;border-radius:20px;padding:20px;margin:18px 0}
-.row{display:flex;align-items:center;justify-content:space-between;gap:12px}
-button{border:0;border-radius:17px;padding:20px 15px;min-height:78px;background:#c8f169;color:#101318;font-size:25px;line-height:1.25;font-weight:800;cursor:pointer}
-button.secondary{background:#29313d;color:#fff;border:2px solid #606b7b}
-button.danger{background:#65343a;color:#fff;border:2px solid #89535a}
-button:disabled{opacity:.4}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.full{width:100%;margin-top:12px}
-input,select{width:100%;min-width:0;background:#10151c;color:#fff;border:2px solid #697587;border-radius:14px;padding:18px;font-size:27px}
-label{display:block;font-size:23px;color:#e0e4ec;margin:16px 0 8px}
-.bigtime{font-size:29px;font-weight:900;font-variant-numeric:tabular-nums}
-.resttime{font-size:64px;font-weight:900;color:#c8f169;text-align:center;font-variant-numeric:tabular-nums}
-.metric{font-size:42px;font-weight:900}
-.exercise{padding:16px 0;border-bottom:1px solid #454e5c}
-.exercise:last-child{border-bottom:0}
-a{color:#c8f169}
-.hidden{display:none!important}
-.top{position:sticky;top:0;background:#101318;padding:12px 0 16px;z-index:2}
-@media(max-width:390px){
- main{padding:12px 10px 30px}
- h1{font-size:36px}
- h2{font-size:31px}
- h3{font-size:25px}
- body{font-size:22px}
- button{font-size:22px;padding:17px 10px}
- .small{font-size:19px}
- .bigtime{font-size:25px}
- .resttime{font-size:56px}
- .card{padding:15px}
+:root {
+  --bg: #101827;
+  --panel: #1b2638;
+  --panel2: #26354b;
+  --text: #ffffff;
+  --muted: #c3ccda;
+  --green: #168653;
+  --blue: #2864c5;
+  --red: #b93838;
+  --border: #40516a;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  padding: 18px;
+  padding-bottom: 40px;
+  background: var(--bg);
+  color: var(--text);
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 23px;
+  line-height: 1.4;
+}
+main { max-width: 760px; margin: auto; }
+h1 { font-size: 42px; margin: 8px 0 18px; }
+h2 { font-size: 32px; margin: 14px 0; }
+h3 { font-size: 27px; margin: 8px 0; }
+p { margin: 8px 0; }
+small, .muted { color: var(--muted); }
+small { font-size: 19px; }
+button, input, select {
+  font: inherit;
+  border-radius: 12px;
+}
+button {
+  min-height: 68px;
+  padding: 15px 18px;
+  border: 0;
+  background: var(--panel2);
+  color: white;
+  font-weight: 700;
+  cursor: pointer;
+}
+button:disabled { opacity: .45; }
+input, select {
+  width: 100%;
+  min-height: 60px;
+  padding: 12px;
+  background: #101827;
+  color: white;
+  border: 2px solid var(--border);
+}
+label { display: block; margin: 10px 0 5px; }
+button.primary { background: var(--green); }
+button.blue { background: var(--blue); }
+button.danger { background: var(--red); }
+button.outline { border: 2px solid var(--border); background: transparent; }
+button.smallbtn { min-height: 48px; padding: 9px 12px; font-size: 20px; }
+.card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 18px;
+  margin: 14px 0;
+}
+.row { display: flex; gap: 10px; align-items: center; }
+.row > * { flex: 1; min-width: 0; }
+.stack { display: grid; gap: 12px; }
+.routines { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.routine {
+  min-height: 88px;
+  padding: 10px 4px;
+  border: 2px solid var(--border);
+  background: var(--panel);
+}
+.routine strong { display: block; font-size: 30px; }
+.routine span { display: block; font-size: 15px; }
+.routine.selected { border: 3px solid #58d99b; background: #214735; }
+.start-button {
+  width: 100%;
+  min-height: 82px;
+  font-size: 27px;
+  margin: 14px 0 8px;
+}
+.exercise-row {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 14px;
+  margin: 10px 0;
+}
+.exercise-row .row { margin-top: 10px; }
+.exercise-title { font-weight: bold; font-size: 23px; }
+.timer {
+  font-size: 54px;
+  font-weight: bold;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+  margin: 8px 0;
+}
+.total-timer { font-size: 29px; }
+.progress {
+  background: #101827;
+  border-radius: 10px;
+  padding: 12px;
+  text-align: center;
+  margin: 12px 0;
+}
+.set-row {
+  display: grid;
+  grid-template-columns: 65px 1fr 1fr;
+  gap: 8px;
+  align-items: center;
+  margin: 10px 0;
+}
+.set-row input { min-width: 0; }
+.set-label { font-weight: bold; }
+.status { font-size: 18px; color: var(--muted); }
+.hidden { display: none !important; }
+hr { border: 0; border-top: 1px solid var(--border); margin: 18px 0; }
+@media (max-width: 480px) {
+  body { padding: 12px; font-size: 22px; }
+  h1 { font-size: 36px; }
+  h2 { font-size: 29px; }
+  button { padding: 12px 10px; }
+  .routine span { font-size: 13px; }
+  .set-row { grid-template-columns: 48px 1fr 1fr; gap: 6px; }
+  .timer { font-size: 48px; }
 }
 </style>
 </head>
+
 <body>
 <main>
-<div class="top row">
-  <div>
-    <div class="small">MEU APLICATIVO DE MUSCULAÇÃO</div>
-    <h1>Meu Treino 💪</h1>
-  </div>
-  <div style="text-align:right">
-    <div class="small">TEMPO TOTAL</div>
-    <div class="bigtime" id="globalTime">00:00:00</div>
-  </div>
-</div>
-<div id="app"></div>
+  <header>
+    <h1>Meu Treino</h1>
+  </header>
+
+  <section id="homeScreen">
+    <p class="muted">Escolha o treino de hoje</p>
+
+    <div class="routines">
+      <button class="routine selected" id="routineA" onclick="selectRoutine('A')">
+        <strong>A</strong><span>Peito e tríceps</span>
+      </button>
+      <button class="routine" id="routineB" onclick="selectRoutine('B')">
+        <strong>B</strong><span>Costas e bíceps</span>
+      </button>
+      <button class="routine" id="routineC" onclick="selectRoutine('C')">
+        <strong>C</strong><span>Pernas e ombros</span>
+      </button>
+    </div>
+
+    <button class="primary start-button" onclick="startWorkout()">
+      ▶ INICIAR TREINO
+    </button>
+
+    <button class="outline" style="width:100%" onclick="toggleEditor()">
+      ✏️ EDITAR EXERCÍCIOS
+    </button>
+
+    <section id="editor" class="card hidden">
+      <h2>Editar treino <span id="editorRoutineName">A</span></h2>
+      <p class="muted">Altere os exercícios, séries e repetições antes de começar.</p>
+
+      <div id="editorExercises"></div>
+
+      <button class="blue" style="width:100%;margin-top:10px" onclick="addExercise()">
+        + ADICIONAR EXERCÍCIO
+      </button>
+      <button class="primary" style="width:100%;margin-top:10px" onclick="saveEditor()">
+        SALVAR ALTERAÇÕES
+      </button>
+      <button class="outline" style="width:100%;margin-top:10px" onclick="toggleEditor(false)">
+        VOLTAR
+      </button>
+    </section>
+
+    <section id="resumeCard" class="card hidden">
+      <h2>Treino em andamento</h2>
+      <p>Você tem um treino não encerrado.</p>
+      <button class="primary" style="width:100%" onclick="resumeWorkout()">
+        CONTINUAR TREINO
+      </button>
+      <button class="danger" style="width:100%;margin-top:10px" onclick="discardWorkout()">
+        DESCARTAR TREINO
+      </button>
+    </section>
+
+    <section class="card">
+      <h2>Histórico de treinos</h2>
+      <div id="historyList"></div>
+    </section>
+  </section>
+
+  <section id="workoutScreen" class="hidden">
+    <div class="row">
+      <button class="outline smallbtn" onclick="goHome()">← INÍCIO</button>
+      <button class="outline smallbtn" onclick="finishWorkout()">SALVAR E ENCERRAR</button>
+    </div>
+
+    <div class="card">
+      <p class="muted">Tempo total do treino</p>
+      <div class="timer total-timer" id="totalTimer">00:00:00</div>
+    </div>
+
+    <div class="progress" id="exerciseProgress"></div>
+
+    <div class="card">
+      <h2 id="currentExerciseName">Exercício</h2>
+      <p class="muted" id="currentExerciseInfo"></p>
+      <div id="setsArea"></div>
+      <button class="primary" id="setActionButton" style="width:100%;margin-top:14px" onclick="setAction()">
+        INICIAR SÉRIE
+      </button>
+    </div>
+
+    <div class="card">
+      <h2>Descanso</h2>
+      <p class="muted">Cronômetro manual: inicie quando quiser e pare quando estiver pronto para a próxima série.</p>
+      <div class="timer" id="restTimer">00:00</div>
+      <div class="row">
+        <button class="blue" id="restToggle" onclick="toggleRest()">INICIAR</button>
+        <button class="outline" onclick="resetRest()">ZERAR</button>
+      </div>
+    </div>
+
+    <div class="row">
+      <button class="outline" onclick="previousExercise()">← ANTERIOR</button>
+      <button class="blue" onclick="nextExercise()">PRÓXIMO →</button>
+    </div>
+
+    <button class="primary" style="width:100%;margin-top:16px" onclick="finishWorkout()">
+      SALVAR E ENCERRAR TREINO
+    </button>
+    <button class="danger" style="width:100%;margin-top:10px" onclick="discardWorkout()">
+      DESCARTAR TREINO
+    </button>
+  </section>
+
+  <section id="detailScreen" class="hidden">
+    <button class="outline" style="width:100%" onclick="goHome()">← VOLTAR AO INÍCIO</button>
+    <div id="historyDetails"></div>
+  </section>
 </main>
 
 <script>
-const KEY="meuTreinoV1";
+const KEY = "meuTreinoV1";
 
-const initial={
- routines:{
-  A:[
-   {name:"Supino reto com barra",group:"Peito",sets:4,reps:"8–12"},
-   {name:"Supino inclinado com halteres",group:"Peito",sets:3,reps:"8–12"},
-   {name:"Crucifixo na máquina",group:"Peito",sets:3,reps:"10–15"},
-   {name:"Tríceps na polia",group:"Tríceps",sets:3,reps:"10–15"},
-   {name:"Tríceps francês com halter",group:"Tríceps",sets:3,reps:"10–12"}
+const defaults = {
+  A: [
+    {name:"Supino reto com barra", sets:4, reps:"8–12"},
+    {name:"Supino inclinado com halteres", sets:3, reps:"8–12"},
+    {name:"Crucifixo na máquina", sets:3, reps:"10–15"},
+    {name:"Tríceps na polia", sets:3, reps:"10–15"},
+    {name:"Tríceps francês com halter", sets:3, reps:"10–12"}
   ],
-  B:[
-   {name:"Puxada frontal na polia",group:"Costas",sets:4,reps:"8–12"},
-   {name:"Remada baixa",group:"Costas",sets:3,reps:"8–12"},
-   {name:"Remada unilateral com halter",group:"Costas",sets:3,reps:"10–12"},
-   {name:"Rosca direta",group:"Bíceps",sets:3,reps:"8–12"},
-   {name:"Rosca martelo",group:"Bíceps",sets:3,reps:"10–12"}
+  B: [
+    {name:"Puxada frontal na polia", sets:4, reps:"8–12"},
+    {name:"Remada baixa", sets:3, reps:"8–12"},
+    {name:"Remada unilateral com halter", sets:3, reps:"10–12"},
+    {name:"Rosca direta", sets:3, reps:"8–12"},
+    {name:"Rosca martelo", sets:3, reps:"10–12"}
   ],
-  C:[
-   {name:"Leg press",group:"Pernas",sets:4,reps:"10–15"},
-   {name:"Cadeira extensora",group:"Pernas",sets:3,reps:"10–15"},
-   {name:"Mesa flexora",group:"Pernas",sets:3,reps:"10–15"},
-   {name:"Panturrilha",group:"Pernas",sets:3,reps:"12–20"},
-   {name:"Desenvolvimento com halteres",group:"Ombros",sets:3,reps:"8–12"},
-   {name:"Elevação lateral",group:"Ombros",sets:3,reps:"10–15"}
+  C: [
+    {name:"Leg press", sets:4, reps:"10–15"},
+    {name:"Cadeira extensora", sets:3, reps:"10–15"},
+    {name:"Mesa flexora", sets:3, reps:"10–15"},
+    {name:"Panturrilha", sets:3, reps:"12–20"},
+    {name:"Desenvolvimento com halteres", sets:3, reps:"8–12"},
+    {name:"Elevação lateral", sets:3, reps:"10–15"}
   ]
- },
- history:[],
- workout:null
 };
 
-function loadData(){
- try{
-  const saved=localStorage.getItem(KEY);
-  if(!saved)return JSON.parse(JSON.stringify(initial));
-  const parsed=JSON.parse(saved);
+let data = loadData();
+let selectedRoutine = "A";
+let editBuffer = [];
+let workout = data.current || null;
+let activeSet = false;
+let restRunning = false;
+let restStartedAt = null;
+let restElapsed = 0;
+let interval = null;
+
+function loadData() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(KEY));
+    if (saved && saved.routines && saved.history) {
+      return saved;
+    }
+  } catch(e) {}
   return {
-   ...initial,
-   ...parsed,
-   routines:{...initial.routines,...(parsed.routines||{})},
-   history:parsed.history||[],
-   workout:parsed.workout||null
+    routines: JSON.parse(JSON.stringify(defaults)),
+    history: [],
+    current: null
   };
- }catch(e){
-  return JSON.parse(JSON.stringify(initial));
- }
 }
 
-let data=loadData();
-let view="home";
-let selected="A";
-
-function save(){
- try{
-  localStorage.setItem(KEY,JSON.stringify(data));
- }catch(e){
-  alert("Não foi possível salvar os dados neste navegador. Verifique o espaço disponível.");
- }
+function saveData() {
+  data.current = workout;
+  localStorage.setItem(KEY, JSON.stringify(data));
 }
 
-function esc(s){
- return String(s??"").replace(/[&<>"']/g,c=>({
-  "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
- }[c]));
+function selectRoutine(routine) {
+  selectedRoutine = routine;
+  ["A","B","C"].forEach(r => {
+    document.getElementById("routine" + r).classList.toggle("selected", r === routine);
+  });
+  document.getElementById("editorRoutineName").textContent = routine;
+  renderEditor();
 }
 
-function duration(ms){
- let n=Math.max(0,Math.floor(ms/1000));
- return String(Math.floor(n/3600)).padStart(2,"0")+":"+
- String(Math.floor(n%3600/60)).padStart(2,"0")+":"+
- String(n%60).padStart(2,"0");
-}
-
-function elapsed(start){
- return duration(Date.now()-start);
-}
-
-function lastExercise(name){
- for(const w of data.history){
-  const e=(w.exercises||[]).find(x=>x.name===name);
-  if(e){
-   const sets=[...(e.sets||[])].reverse();
-   const s=sets.find(x=>x.status==="done"&&x.weight!=="");
-   if(s)return s.weight;
+function toggleEditor(force) {
+  const editor = document.getElementById("editor");
+  const show = force === undefined ? editor.classList.contains("hidden") : force;
+  editor.classList.toggle("hidden", !show);
+  if (show) {
+    editBuffer = JSON.parse(JSON.stringify(data.routines[selectedRoutine]));
+    renderEditor();
+    document.getElementById("editorRoutineName").textContent = selectedRoutine;
+    editor.scrollIntoView({behavior:"smooth", block:"start"});
   }
- }
- return "";
 }
 
-function header(title,sub=""){
- return `<div class="small">${esc(sub)}</div><h2>${esc(title)}</h2>`;
+function renderEditor() {
+  const container = document.getElementById("editorExercises");
+  container.innerHTML = "";
+  editBuffer.forEach((ex, i) => {
+    const card = document.createElement("div");
+    card.className = "exercise-row";
+    card.innerHTML = `
+      <label>Nome do exercício</label>
+      <input aria-label="Nome do exercício ${i+1}" value="${escapeAttr(ex.name)}" data-field="name">
+      <div class="row">
+        <div><label>Séries</label><input type="number" min="1" max="20" value="${ex.sets}" data-field="sets"></div>
+        <div><label>Repetições</label><input value="${escapeAttr(ex.reps)}" data-field="reps"></div>
+      </div>
+      <div class="row">
+        <button class="outline smallbtn" ${i===0?"disabled":""} onclick="moveEditorExercise(${i},-1)">↑ SUBIR</button>
+        <button class="outline smallbtn" ${i===editBuffer.length-1?"disabled":""} onclick="moveEditorExercise(${i},1)">↓ DESCER</button>
+        <button class="danger smallbtn" onclick="deleteEditorExercise(${i})">EXCLUIR</button>
+      </div>`;
+    card.querySelectorAll("input").forEach(input => {
+      input.addEventListener("change", () => {
+        const field = input.dataset.field;
+        ex[field] = field === "sets" ? Math.max(1, Math.min(20, Number(input.value) || 1)) : input.value;
+      });
+    });
+    container.appendChild(card);
+  });
 }
 
-function home(){
- view="home";
- const w=data.workout;
-
- document.getElementById("app").innerHTML=`
- ${w?`<div class="card">
- <h2>Treino em andamento</h2>
- <p>Treino ${w.type} · iniciado às ${new Date(w.startedAt).toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"})}</p>
- <button class="full" onclick="resumeWorkout()">CONTINUAR TREINO</button>
- </div>`:""}
-
- <div class="card">
- <h2>Escolha sua ficha</h2>
- <div class="grid">
- ${["A","B","C"].map(t=>`
- <button onclick="openRoutine('${t}')">
- TREINO ${t}<br>
- <span style="font-size:19px">${t==="A"?"Peito e tríceps":t==="B"?"Costas e bíceps":"Pernas e ombros"}</span>
- </button>`).join("")}
- </div>
- </div>
-
- <div class="card">
- <h2>Histórico</h2>
- <p class="small">${data.history.length} treino(s) salvo(s)</p>
- <button class="full secondary" onclick="showHistory()">VER HISTÓRICO</button>
- </div>
-
- <p class="small">Edite suas fichas antes de começar. Os registros de cada sessão são guardados separadamente.</p>`;
+function escapeAttr(value) {
+  return String(value ?? "").replaceAll("&","&amp;").replaceAll('"',"&quot;").replaceAll("<","&lt;").replaceAll(">","&gt;");
 }
 
-function openRoutine(t){
- selected=t;
- view="routine";
- renderRoutine();
+function addExercise() {
+  editBuffer.push({name:"Novo exercício", sets:3, reps:"10–12"});
+  renderEditor();
 }
 
-function renderRoutine(){
- const list=data.routines[selected];
-
- document.getElementById("app").innerHTML=`
- <button class="secondary" onclick="home()">← VOLTAR</button>
- ${header("Treino "+selected,
- selected==="A"?"Peito e tríceps":
- selected==="B"?"Costas e bíceps":"Pernas e ombros")}
-
- <p class="small">Edite sua ficha antes de iniciar. As mudanças ficam salvas.</p>
-
- ${list.map((e,i)=>`
- <div class="card">
- <div class="row">
- <h3>${i+1}. ${esc(e.name)}</h3>
- <button class="danger" style="min-height:60px;padding:10px 16px" onclick="removeExercise(${i})">EXCLUIR</button>
- </div>
-
- <label>Nome do exercício</label>
- <input value="${esc(e.name)}" onchange="editExercise(${i},'name',this.value)">
-
- <div class="grid">
- <div>
- <label>Séries</label>
- <select onchange="editExercise(${i},'sets',this.value)">
- ${[1,2,3,4,5,6].map(n=>`
- <option value="${n}" ${e.sets===n?"selected":""}>${n}</option>
- `).join("")}
- </select>
- </div>
- <div>
- <label>Repetições previstas</label>
- <input value="${esc(e.reps)}" onchange="editExercise(${i},'reps',this.value)">
- </div>
- </div>
-
- <div class="grid" style="margin-top:12px">
- <button class="secondary" onclick="moveExercise(${i},-1)" ${i===0?"disabled":""}>↑ SUBIR</button>
- <button class="secondary" onclick="moveExercise(${i},1)" ${i===list.length-1?"disabled":""}>↓ DESCER</button>
- </div>
- </div>`).join("")}
-
- <button class="secondary full" onclick="addExercise()">＋ ADICIONAR EXERCÍCIO</button>
- <button class="full" onclick="startWorkout()">INICIAR TREINO ${selected}</button>`;
+function deleteEditorExercise(i) {
+  if (confirm("Excluir este exercício da rotina?")) {
+    editBuffer.splice(i,1);
+    renderEditor();
+  }
 }
 
-function editExercise(i,k,v){
- if(k==="sets")v=Number(v);
- if(typeof v==="string")v=v.trim();
- data.routines[selected][i][k]=v;
- save();
+function moveEditorExercise(i, direction) {
+  const j = i + direction;
+  if (j < 0 || j >= editBuffer.length) return;
+  [editBuffer[i], editBuffer[j]] = [editBuffer[j], editBuffer[i]];
+  renderEditor();
 }
 
-function addExercise(){
- const name=prompt("Digite o nome do exercício:");
- if(!name||!name.trim())return;
- const group=selected==="A"?"Peito / tríceps":
- selected==="B"?"Costas / bíceps":"Pernas / ombros";
- data.routines[selected].push({
-  name:name.trim(),group,sets:3,reps:"8–12"
- });
- save();
- renderRoutine();
+function saveEditor() {
+  editBuffer = editBuffer
+    .map(ex => ({
+      name: String(ex.name || "").trim(),
+      sets: Math.max(1, Math.min(20, Number(ex.sets) || 1)),
+      reps: String(ex.reps || "").trim()
+    }))
+    .filter(ex => ex.name);
+
+  if (!editBuffer.length) {
+    alert("Inclua pelo menos um exercício.");
+    return;
+  }
+  data.routines[selectedRoutine] = JSON.parse(JSON.stringify(editBuffer));
+  saveData();
+  toggleEditor(false);
+  alert("Treino atualizado!");
 }
 
-function removeExercise(i){
- if(!confirm("Excluir este exercício da ficha?"))return;
- data.routines[selected].splice(i,1);
- save();
- renderRoutine();
+function startWorkout() {
+  if (workout) {
+    if (confirm("Já existe um treino em andamento. Deseja continuar esse treino?")) {
+      resumeWorkout();
+    }
+    return;
+  }
+
+  const exercises = data.routines[selectedRoutine].map(ex => ({
+    name: ex.name,
+    targetSets: Number(ex.sets),
+    repsTarget: ex.reps,
+    sets: Array.from({length:Number(ex.sets)}, () => ({
+      weight: "",
+      reps: "",
+      done: false
+    }))
+  }));
+
+  workout = {
+    routine: selectedRoutine,
+    startedAt: Date.now(),
+    elapsedBeforePause: 0,
+    exercises,
+    exerciseIndex: 0
+  };
+  activeSet = false;
+  restRunning = false;
+  restStartedAt = null;
+  restElapsed = 0;
+  saveData();
+  showWorkout();
 }
 
-function moveExercise(i,delta){
- const a=data.routines[selected],j=i+delta;
- if(j<0||j>=a.length)return;
- [a[i],a[j]]=[a[j],a[i]];
- save();
- renderRoutine();
+function resumeWorkout() {
+  if (!workout) return;
+  showWorkout();
 }
 
-function startWorkout(){
- if(!data.routines[selected].length){
-  alert("Adicione pelo menos um exercício.");
-  return;
- }
-
- if(data.workout){
-  if(!confirm("Já existe um treino em andamento. Descartar essa sessão e iniciar outra?"))return;
-  data.workout=null;
- }
-
- data.workout={
-  type:selected,
-  startedAt:Date.now(),
-  currentExercise:0,
-  currentSet:0,
-  restStartedAt:null,
-  exercises:data.routines[selected].map(e=>({
-   name:e.name,
-   group:e.group,
-   plannedSets:e.sets,
-   reps:e.reps,
-   sets:Array.from({length:e.sets},()=>({
-    weight:lastExercise(e.name),
-    reps:"",
-    status:"pending",
-    startedAt:null,
-    endedAt:null
-   }))
-  }))
- };
-
- save();
- view="workout";
- renderWorkout();
+function showWorkout() {
+  document.getElementById("homeScreen").classList.add("hidden");
+  document.getElementById("detailScreen").classList.add("hidden");
+  document.getElementById("workoutScreen").classList.remove("hidden");
+  renderWorkout();
+  startTicker();
 }
 
-function resumeWorkout(){
- view="workout";
- renderWorkout();
+function renderWorkout() {
+  if (!workout) return;
+  const i = workout.exerciseIndex;
+  const ex = workout.exercises[i];
+
+  if (!ex) {
+    document.getElementById("currentExerciseName").textContent = "Treino concluído";
+    document.getElementById("currentExerciseInfo").textContent = "Você chegou ao final da lista.";
+    document.getElementById("exerciseProgress").textContent = "Todos os exercícios foram exibidos.";
+    document.getElementById("setsArea").innerHTML = "";
+    document.getElementById("setActionButton").textContent = "ENCERRAR TREINO";
+    document.getElementById("setActionButton").onclick = finishWorkout;
+    return;
+  }
+
+  document.getElementById("exerciseProgress").textContent =
+    `Treino ${workout.routine} · Exercício ${i+1} de ${workout.exercises.length}`;
+  document.getElementById("currentExerciseName").textContent = ex.name;
+  document.getElementById("currentExerciseInfo").textContent =
+    `${ex.targetSets} séries planejadas · ${ex.repsTarget || "Repetições livres"}`;
+
+  const setsArea = document.getElementById("setsArea");
+  setsArea.innerHTML = `
+    <div class="set-row">
+      <div class="set-label">Série</div>
+      <div class="muted">Peso por lado/halter</div>
+      <div class="muted">Repetições</div>
+    </div>`;
+
+  ex.sets.forEach((s, si) => {
+    const row = document.createElement("div");
+    row.className = "set-row";
+    row.innerHTML = `
+      <div class="set-label">${si+1}</div>
+      <input type="number" min="0" step="0.5" placeholder="Peso" aria-label="Peso da série ${si+1}" value="${escapeAttr(s.weight)}" ${s.done?"disabled":""}>
+      <input type="number" min="0" step="1" placeholder="Reps" aria-label="Repetições da série ${si+1}" value="${escapeAttr(s.reps)}" ${s.done?"disabled":""}>`;
+    const inputs = row.querySelectorAll("input");
+    inputs[0].addEventListener("change", () => { s.weight = inputs[0].value; saveData(); });
+    inputs[1].addEventListener("change", () => { s.reps = inputs[1].value; saveData(); });
+    setsArea.appendChild(row);
+
+    if (s.done) {
+      const status = document.createElement("div");
+      status.className = "status";
+      status.textContent = "✓ Série concluída";
+      setsArea.appendChild(status);
+    }
+  });
+
+  const nextSet = ex.sets.findIndex(s => !s.done);
+  const action = document.getElementById("setActionButton");
+  action.onclick = setAction;
+
+  if (nextSet === -1) {
+    action.textContent = "EXERCÍCIO CONCLUÍDO — PRÓXIMO";
+    action.onclick = nextExercise;
+  } else if (activeSet) {
+    action.textContent = "FINALIZAR SÉRIE";
+  } else {
+    action.textContent = `INICIAR SÉRIE ${nextSet+1}`;
+  }
 }
 
-function currentExercise(){
- return data.workout.exercises[data.workout.currentExercise];
+function setAction() {
+  if (!workout) return;
+  const ex = workout.exercises[workout.exerciseIndex];
+  if (!ex) { finishWorkout(); return; }
+
+  const nextSet = ex.sets.findIndex(s => !s.done);
+  if (nextSet === -1) {
+    nextExercise();
+    return;
+  }
+
+  if (!activeSet) {
+    activeSet = true;
+    renderWorkout();
+    return;
+  }
+
+  const inputs = document.querySelectorAll("#setsArea .set-row input");
+  const row = inputs.length ? inputs : [];
+  // Salva os campos visíveis antes de marcar a série como concluída.
+  ex.sets.forEach((s, si) => {
+    if (!s.done) {
+      const setInputs = document.querySelectorAll("#setsArea .set-row");
+      const targetRow = setInputs[si+1];
+      if (targetRow) {
+        const fields = targetRow.querySelectorAll("input");
+        if (fields[0]) s.weight = fields[0].value;
+        if (fields[1]) s.reps = fields[1].value;
+      }
+    }
+  });
+
+  ex.sets[nextSet].done = true;
+  ex.sets[nextSet].completedAt = Date.now();
+  activeSet = false;
+  saveData();
+  renderWorkout();
 }
 
-function currentSet(){
- const e=currentExercise();
- return e&&e.sets[data.workout.currentSet];
+function nextExercise() {
+  if (!workout) return;
+  if (workout.exerciseIndex < workout.exercises.length - 1) {
+    workout.exerciseIndex++;
+    activeSet = false;
+    saveData();
+    renderWorkout();
+  } else {
+    finishWorkout();
+  }
 }
 
-function updateSet(field,value){
- const s=currentSet();
- if(!s)return;
- s[field]=value;
- save();
+function previousExercise() {
+  if (!workout || workout.exerciseIndex <= 0) return;
+  workout.exerciseIndex--;
+  activeSet = false;
+  saveData();
+  renderWorkout();
 }
 
-function startSet(){
- const w=data.workout;
- const e=currentExercise();
- const s=currentSet();
- if(!s)return;
-
- w.restStartedAt=null;
- s.status="active";
- s.startedAt=Date.now();
- save();
- renderWorkout();
+function toggleRest() {
+  if (!restRunning) {
+    restStartedAt = Date.now();
+    restRunning = true;
+    document.getElementById("restToggle").textContent = "PARAR";
+  } else {
+    restElapsed += Date.now() - restStartedAt;
+    restStartedAt = null;
+    restRunning = false;
+    document.getElementById("restToggle").textContent = "CONTINUAR";
+  }
+  updateRestDisplay();
 }
 
-function finishSet(){
- const w=data.workout;
- const s=currentSet();
- if(!s||s.status!=="active")return;
-
- s.status="done";
- s.endedAt=Date.now();
- w.restStartedAt=Date.now();
- w.currentSet++;
-
- save();
- renderWorkout();
+function resetRest() {
+  restRunning = false;
+  restStartedAt = null;
+  restElapsed = 0;
+  document.getElementById("restToggle").textContent = "INICIAR";
+  updateRestDisplay();
 }
 
-function nextExercise(){
- const w=data.workout;
- if(w.currentExercise>=w.exercises.length-1){
-  finishWorkout();
-  return;
- }
- w.currentExercise++;
- w.currentSet=0;
- w.restStartedAt=null;
- save();
- renderWorkout();
+function elapsedWorkoutMs() {
+  return Date.now() - workout.startedAt + (workout.elapsedBeforePause || 0);
 }
 
-function previousExercise(){
- const w=data.workout;
- if(w.currentExercise===0)return;
- w.currentExercise--;
- w.currentSet=0;
- w.restStartedAt=null;
- save();
- renderWorkout();
+function formatTime(ms, hours = false) {
+  let seconds = Math.floor(Math.max(0, ms) / 1000);
+  const h = Math.floor(seconds / 3600);
+  seconds %= 3600;
+  const m = Math.floor(seconds / 60);
+  const s = seconds % 60;
+  return hours
+    ? `${String(h).padStart(2,"0")}:${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`
+    : `${String(h*60+m).padStart(2,"0")}:${String(s).padStart(2,"0")}`;
 }
 
-function renderWorkout(){
- view="workout";
- const w=data.workout;
- const e=currentExercise();
-
- if(!w||!e){
-  home();
-  return;
- }
-
- const s=currentSet();
- const done=e.sets.filter(x=>x.status==="done").length;
- const last=lastExercise(e.name);
-
- document.getElementById("app").innerHTML=`
- <div class="row">
- <button class="secondary" onclick="home()">TELA INICIAL</button>
- <span class="small">TREINO ${w.type}</span>
- </div>
-
- <div class="card">
- <div class="row">
- <span class="small">TEMPO TOTAL</span>
- <span class="bigtime" id="workoutTime">${elapsed(w.startedAt)}</span>
- </div>
-
- <div class="small" style="margin-top:12px">
- EXERCÍCIO ${w.currentExercise+1} DE ${w.exercises.length}
- </div>
-
- <h2 style="font-size:34px">${esc(e.name)}</h2>
- <div class="small">Séries concluídas: ${done} de ${e.sets.length}</div>
-
- ${last!==""?
- `<p class="small">Último treino: ${esc(last)} kg por lado/halter</p>`:
- `<p class="small">Sem carga anterior registrada.</p>`}
- </div>
-
- ${s?`
- <div class="card">
- <div class="row">
- <h2>Série ${w.currentSet+1} de ${e.sets.length}</h2>
- <span class="small">${s.status==="active"?"EM EXECUÇÃO":"A FAZER"}</span>
- </div>
-
- <label>Peso em kg (por lado ou por halter)</label>
- <input type="number" inputmode="decimal" min="0" step="0.5"
- value="${esc(s.weight)}" placeholder="Ex.: 20"
- onchange="updateSet('weight',this.value)">
-
- <label>Repetições realizadas</label>
- <input type="number" inputmode="numeric" min="0" step="1"
- value="${esc(s.reps)}" placeholder="Ex.: 10"
- onchange="updateSet('reps',this.value)">
-
- ${s.status==="active"?
- `<button class="full" onclick="finishSet()">FINALIZAR SÉRIE E INICIAR DESCANSO</button>`:
- `<button class="full" onclick="startSet()">${w.restStartedAt?"INICIAR PRÓXIMA SÉRIE":"INICIAR SÉRIE"}</button>`}
- </div>`:
- `<div class="card">
- <h2>Exercício concluído!</h2>
- <p>Todas as séries previstas foram concluídas.</p>
- </div>`}
-
- <div class="card">
- <div class="small" style="text-align:center">DESCANSO · TEMPO DECORRIDO</div>
- <div class="resttime" id="restTime">${w.restStartedAt?elapsed(w.restStartedAt):"00:00:00"}</div>
- <div class="grid">
- <button class="secondary" onclick="resetRest()">ZERAR DESCANSO</button>
- <button class="secondary" onclick="startRest()">INICIAR DESCANSO</button>
- </div>
- </div>
-
- <div class="grid">
- <button class="secondary" onclick="previousExercise()" ${w.currentExercise===0?"disabled":""}>← ANTERIOR</button>
- <button onclick="nextExercise()">${w.currentExercise===w.exercises.length-1?"FINALIZAR TREINO":"PRÓXIMO EXERCÍCIO →"}</button>
- </div>
-
- <button class="full" onclick="finishWorkout()">SALVAR E ENCERRAR TREINO</button>
- <button class="danger full" onclick="cancelWorkout()">CANCELAR E DESCARTAR TREINO</button>
- `;
+function updateRestDisplay() {
+  const ms = restElapsed + (restRunning && restStartedAt ? Date.now()-restStartedAt : 0);
+  document.getElementById("restTimer").textContent = formatTime(ms);
 }
 
-function startRest(){
- if(!data.workout)return;
- data.workout.restStartedAt=Date.now();
- save();
- renderWorkout();
+function startTicker() {
+  if (interval) clearInterval(interval);
+  interval = setInterval(() => {
+    if (workout && !document.getElementById("workoutScreen").classList.contains("hidden")) {
+      document.getElementById("totalTimer").textContent = formatTime(elapsedWorkoutMs(), true);
+      updateRestDisplay();
+    }
+  }, 500);
 }
 
-function resetRest(){
- if(!data.workout)return;
- data.workout.restStartedAt=null;
- save();
- renderWorkout();
+function finishWorkout() {
+  if (!workout) return;
+  if (!confirm("Salvar e encerrar este treino agora? Séries não realizadas ficarão marcadas como não concluídas.")) return;
+
+  const endedAt = Date.now();
+  const savedWorkout = JSON.parse(JSON.stringify(workout));
+  savedWorkout.endedAt = endedAt;
+  savedWorkout.durationMs = elapsedWorkoutMs();
+  savedWorkout.completedSets = savedWorkout.exercises.reduce(
+    (total, ex) => total + ex.sets.filter(s => s.done).length, 0
+  );
+  savedWorkout.plannedSets = savedWorkout.exercises.reduce(
+    (total, ex) => total + ex.sets.length, 0
+  );
+
+  data.history.unshift(savedWorkout);
+  workout = null;
+  activeSet = false;
+  restRunning = false;
+  restStartedAt = null;
+  restElapsed = 0;
+  if (interval) clearInterval(interval);
+  interval = null;
+  saveData();
+  goHome();
 }
 
-function finishWorkout(){
- const w=data.workout;
- if(!w)return;
-
- const completedSets=w.exercises.reduce(
-  (n,e)=>n+e.sets.filter(s=>s.status==="done").length,0
- );
-
- if(!confirm(
-  "Salvar e encerrar este treino agora?\n\n"+
-  "Séries concluídas: "+completedSets+
-  "\nOs exercícios e as séries pendentes ficarão identificados como não concluídos."
- ))return;
-
- w.finishedAt=Date.now();
- w.durationMs=w.finishedAt-w.startedAt;
- w.completedSets=completedSets;
-
- data.history.unshift(JSON.parse(JSON.stringify(w)));
- data.workout=null;
- save();
- showHistory();
+function discardWorkout() {
+  if (!workout) return;
+  if (!confirm("Descartar este treino sem salvar no histórico?")) return;
+  workout = null;
+  activeSet = false;
+  restRunning = false;
+  if (interval) clearInterval(interval);
+  interval = null;
+  saveData();
+  goHome();
 }
 
-function cancelWorkout(){
- if(!confirm("Descartar todo este treino em andamento? Ele não será salvo no histórico."))return;
- data.workout=null;
- save();
- home();
+function goHome() {
+  document.getElementById("workoutScreen").classList.add("hidden");
+  document.getElementById("detailScreen").classList.add("hidden");
+  document.getElementById("homeScreen").classList.remove("hidden");
+  document.getElementById("resumeCard").classList.toggle("hidden", !workout);
+  renderHistory();
+  if (workout) {
+    document.getElementById("totalTimer").textContent = formatTime(elapsedWorkoutMs(), true);
+  }
 }
 
-function showHistory(){
- view="history";
+function renderHistory() {
+  const list = document.getElementById("historyList");
+  list.innerHTML = "";
+  if (!data.history.length) {
+    list.innerHTML = '<p class="muted">Nenhum treino salvo ainda.</p>';
+    return;
+  }
 
- document.getElementById("app").innerHTML=`
- <button class="secondary" onclick="home()">← INÍCIO</button>
- <h2>Histórico de treinos</h2>
-
- ${data.history.length?
- data.history.map((w,i)=>`
- <div class="card">
- <h3>Treino ${w.type} · ${new Date(w.startedAt).toLocaleDateString("pt-BR")}</h3>
- <p class="small">${new Date(w.startedAt).toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"})} · Duração ${duration(w.durationMs||0)}</p>
- <p class="small">Séries concluídas: ${w.completedSets??w.exercises.reduce((n,e)=>n+e.sets.filter(s=>s.status==="done").length,0)}</p>
- <button class="secondary full" onclick="showDetails(${i})">VER DETALHES</button>
- </div>`).join(""):
- `<div class="card"><p>Nenhum treino salvo ainda.</p><p>Finalize ou salve seu primeiro treino para ver o histórico.</p></div>`}
- `;
+  data.history.forEach((w, i) => {
+    const card = document.createElement("div");
+    card.className = "exercise-row";
+    const date = new Date(w.startedAt).toLocaleString("pt-BR");
+    card.innerHTML = `
+      <strong>Treino ${escapeAttr(w.routine)} — ${escapeAttr(date)}</strong>
+      <p class="muted">${formatTime(w.durationMs, true)} · ${w.completedSets}/${w.plannedSets} séries concluídas</p>
+      <button class="outline smallbtn" onclick="showDetails(${i})">VER DETALHES</button>`;
+    list.appendChild(card);
+  });
 }
 
-function showDetails(i){
- const w=data.history[i];
+function showDetails(i) {
+  const w = data.history[i];
+  const screen = document.getElementById("historyDetails");
+  screen.innerHTML = `<h1>Detalhes do treino ${escapeAttr(w.routine)}</h1>
+    <p>${new Date(w.startedAt).toLocaleString("pt-BR")}</p>
+    <p>Tempo total: ${formatTime(w.durationMs, true)}</p>
+    <p>Séries concluídas: ${w.completedSets} de ${w.plannedSets}</p>`;
 
- document.getElementById("app").innerHTML=`
- <button class="secondary" onclick="showHistory()">← HISTÓRICO</button>
- <h2>Treino ${w.type}</h2>
- <p class="small">${new Date(w.startedAt).toLocaleString("pt-BR")}</p>
- <p class="small">Duração: ${duration(w.durationMs||0)}</p>
+  w.exercises.forEach(ex => {
+    const card = document.createElement("div");
+    card.className = "card";
+    const title = document.createElement("h3");
+    title.textContent = ex.name;
+    card.appendChild(title);
 
- ${w.exercises.map(e=>`
- <div class="card">
- <h3>${esc(e.name)}</h3>
- ${e.sets.map((s,j)=>`
- <p>
- Série ${j+1}: ${s.status==="done"?"Concluída":"Não concluída"}<br>
- Peso: ${s.weight!==""?esc(s.weight)+" kg":"—"}<br>
- Repetições: ${s.reps!==""?esc(s.reps):"—"}
- </p>`).join("")}
- </div>`).join("")}
- `;
+    ex.sets.forEach((s, si) => {
+      const p = document.createElement("p");
+      p.textContent = s.done
+        ? `Série ${si+1}: Concluída · Peso: ${s.weight || "não informado"} · Repetições: ${s.reps || "não informadas"}`
+        : `Série ${si+1}: Não concluída`;
+      card.appendChild(p);
+    });
+    screen.appendChild(card);
+  });
+
+  document.getElementById("homeScreen").classList.add("hidden");
+  document.getElementById("workoutScreen").classList.add("hidden");
+  document.getElementById("detailScreen").classList.remove("hidden");
 }
 
-function render(){
- if(view==="home")home();
- else if(view==="routine")renderRoutine();
- else if(view==="workout")renderWorkout();
- else if(view==="history")showHistory();
+selectRoutine("A");
+renderHistory();
+document.getElementById("resumeCard").classList.toggle("hidden", !workout);
+if (workout) {
+  document.getElementById("resumeCard").classList.remove("hidden");
 }
-
-setInterval(()=>{
- const w=data.workout;
- const global=document.getElementById("globalTime");
- if(global)global.textContent=w?elapsed(w.startedAt):"00:00:00";
-
- const wt=document.getElementById("workoutTime");
- if(wt&&w)wt.textContent=elapsed(w.startedAt);
-
- const rt=document.getElementById("restTime");
- if(rt&&w)rt.textContent=w.restStartedAt?elapsed(w.restStartedAt):"00:00:00";
-},1000);
-
-save();
-render();
 </script>
 </body>
 </html>
